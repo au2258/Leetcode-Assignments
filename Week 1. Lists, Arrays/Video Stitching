@@ -1,0 +1,27 @@
+class Solution:
+    def videoStitching(self, clips: List[List[int]], time: int) -> int:
+        max_num = max(clips, key=lambda x: x[1])[1]
+        clips.sort(key = lambda x: x[0])
+        prev_start, prev_end, prev_prev_end = -1, 0, -1
+        count = 0
+        step = 0
+        if max_num<time:
+            return -1
+        for start, end in clips:
+            step+=1
+            if prev_end>=time:
+                break
+            elif start>prev_end:
+                return -1
+            elif start >= prev_start and end<=prev_end:
+                count+=0
+            elif prev_prev_end > prev_start and end>prev_end and start<=prev_prev_end:
+                prev_end = end
+                prev_start = start
+            elif start == prev_start and end>prev_end:
+                prev_end = end
+            else:
+                count+=1
+                prev_end, prev_prev_end = end, prev_end
+                prev_start = start
+        return count
