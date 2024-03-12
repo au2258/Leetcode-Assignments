@@ -1,0 +1,46 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        # If positive 1, else -1
+        positive = 1
+        # Get rid of whitespace
+        s = s.strip()
+        # To check whether there is a number in the string
+        has_numbers = False
+        index = 0
+        result = 0
+        length = len(s)
+
+        for letter in s:
+            if letter.isdigit():
+                has_numbers = True
+        
+        # If there will be empty string
+        if length==0:
+            return 0
+
+        # Check the first sign
+        if s[0] == '-':
+            positive = -1
+            index+=1
+        elif s[0] == '+':
+            positive = 1
+            index+=1            
+        
+        while index < length and s[index].isdigit():
+            result = result * 10 + int(s[index])
+            index += 1
+
+        # To get correct sign
+        result *= positive
+        
+        # To be in the acceptable limit
+        if result < -2**31:
+            return -2**31
+        elif result > 2**31 - 1:
+            return 2**31 - 1
+
+        # If flag changed to true, then return results
+        if has_numbers ==True:
+            return result
+
+        return 0  
