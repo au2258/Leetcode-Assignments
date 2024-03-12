@@ -1,0 +1,24 @@
+class Solution:
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        palindrome_pairs = []
+        # Create a dictionary that consists reverse strings
+        hashmap = {word[::-1]: index for index, word in enumerate(words)}
+        
+        for index, word in enumerate(words):
+            # Check whether string itself a palindrome
+            if word in hashmap and index != hashmap[word]:
+                palindrome_pairs.append([index, hashmap[word]])
+            # Check whether one string is a palindrome and another is empty
+            # if so, add combination of two indices
+            if  "" in hashmap and word != "" and word == word[::-1]:
+                palindrome_pairs.append([index, hashmap[""]])
+                palindrome_pairs.append([hashmap[""], index])
+            for j in range(len(word)):
+                # Check whether starting with any letter, if we add reverse till it
+                # we get a palindrome
+                if word[:j] in hashmap and word[j:] == word[:j-1:-1]:
+                    palindrome_pairs.append([index, hashmap[word[:j]]])
+                if word[j:] in hashmap and word[:j] == word[j-1::-1]:
+                    palindrome_pairs.append([hashmap[word[j:]], index])
+        
+        return palindrome_pairs
